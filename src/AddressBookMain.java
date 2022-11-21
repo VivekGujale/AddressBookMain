@@ -71,12 +71,12 @@ public class AddressBookMain {
         for (int i = 0; i < addressBook.size(); i++) {
             if (personName.equals(addressBook.get(i).getFirstName()) || personName.equals(addressBook.get(i).getLastName())) {
                 addressBook.remove(i);
+                System.out.println("Deleting contact......");
             } else {
                 System.out.println("No contact found");
             }
         }
     }
-
 
     private void showAddressBook() {
         for (personDetails personDetails : addressBook) {
@@ -96,8 +96,8 @@ public class AddressBookMain {
                     1. Add Person details
                     2. Edit person
                     3. Delete Person
-                    3. show Address book
-                    4. Exit""");
+                    4. show Address book
+                    5. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addPerson();

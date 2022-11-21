@@ -6,7 +6,7 @@ public class AddressBookMain {
 
     //Map is used to store data in key and value format.
     //Used create multiple address books
-    private final Map<String, List> addressBooks = new HashMap<String, List>();
+    private Map<String, List<personDetails>> addressBooks = new HashMap<String, List<personDetails>>();
 
     private static final Scanner sc = new Scanner(System.in);
 
@@ -91,6 +91,66 @@ public class AddressBookMain {
         }
     }
 
+    //Searching person details are duplicate or not
+    public void searchPerson() {
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        System.out.println("Enter the First name");
+        String firstName = sc.nextLine();
+        System.out.println("Enter the Last name");
+        String lastName = sc.nextLine();
+
+        if (isPersonAdded(addressBook, firstName, lastName)) {
+            System.out.println("duplicate Entry");
+        } else {
+            System.out.println("No Entry found so adding person");
+            addPerson();
+        }
+    }
+
+    // checking person by first name and last name.
+    public boolean isPersonAdded(List<personDetails> personList, String firstName, String lastName) {
+        return personList.stream().anyMatch(item -> item.equals(firstName) && item.equals(lastName));
+    }
+
+    //Provided person details
+    {
+        addressBooks = new HashMap<>();
+        addressBook = new ArrayList<>();
+        List<personDetails> addressBook1 = new ArrayList<>();
+        addressBook.add(new personDetails("Vivek", "Gujale", "Kalamboli", "Kalamboli", "Maharashtra", 123456, 7894561230L));
+        addressBook.add(new personDetails("Sagar", "Kalokhe", "Delhi", "Delhi", "Delhi", 789456, 9632145696L));
+        addressBook.add(new personDetails("Sandip", "Kengar", "Pune", "pune", "Maharashtra", 987654, 8978978979L));
+        addressBook1.add(new personDetails("Nilesh", "Choudhary", "Pune", "pune", "Maharashtra", 456456, 9156874527L));
+        addressBook1.add(new personDetails("Tabrej", "Shaikh", "Faridabad", "Faridabad", "Haryana", 369258, 9321356488L));
+        addressBook1.add(new personDetails("Rahul", "Prabhakar", "Kalamboli", "Kalamboli", "Maharashtra", 123456, 7741258926L));
+        addressBooks.put("A", addressBook);
+        addressBooks.put("B", addressBook1);
+    }
+
+    public void printMap(Map<String, List<personDetails>> map) {
+        for (Map.Entry<String, List<personDetails>> list : map.entrySet()) {
+            System.out.println("address book : " + list.getKey());
+            for (personDetails details : list.getValue()) {
+
+                System.out.print("First name : " + details.getFirstName() + " , ");
+                System.out.print("Last name : " + details.getLastName() + " , ");
+                System.out.print("Address : " + details.getAddress() + " , ");
+                System.out.print("City : " + details.getCity() + " , ");
+                System.out.print("State : " + details.getState() + " , ");
+                System.out.print("Zipcode : " + details.getZipCode() + " , ");
+                System.out.print("Phone Number : " + details.getPhoneNumber());
+                System.out.println();
+            }
+            System.out.println("---------------------------------------------");
+        }
+    }
+
+    public void showAddressBooks() {
+        printMap(addressBooks);
+    }
+
     private void showAddressBook() {
         System.out.println("Please select the book");
         String bookName = sc.nextLine();
@@ -110,15 +170,7 @@ public class AddressBookMain {
         String addressBookName = sc.nextLine();
         addressBook = new ArrayList<personDetails>();
         addressBooks.put(addressBookName, addressBook);
-        showAddressBooks();
-    }
-
-    private void showAddressBooks() {
-        for (Map.Entry<String, List> entry : addressBooks.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            System.out.println(key + " " + value);
-        }
+        printMap(addressBooks);
     }
 
 
@@ -136,7 +188,8 @@ public class AddressBookMain {
                     4. Delete Person
                     5. show Address book
                     6. show total Address books
-                    7. Exit""");
+                    7. Search person for duplicate entry
+                    8. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addAddressBooks();
@@ -145,7 +198,8 @@ public class AddressBookMain {
                 case 4 -> addressBookMain.deletePerson();
                 case 5 -> addressBookMain.showAddressBook();
                 case 6 -> addressBookMain.showAddressBooks();
-                case 7 -> isExit = true;
+                case 7 -> addressBookMain.searchPerson();
+                case 8 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

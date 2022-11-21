@@ -2,11 +2,18 @@ import java.util.*;
 
 public class AddressBookMain {
 
-    private final List<personDetails> addressBook = new ArrayList<>();
+    private List<personDetails> addressBook;
+
+    //Map is used to store data in key and value format.
+    //Used create multiple address books
+    private final Map<String, List> addressBooks = new HashMap<String, List>();
 
     private static final Scanner sc = new Scanner(System.in);
 
     private void addPerson() {
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
         personDetails person = new personDetails();
         System.out.println("Enter First Name");
         String firstName = sc.nextLine();
@@ -35,7 +42,10 @@ public class AddressBookMain {
     }
 
     private void editPerson() {
-        System.out.println("Enter the Name");
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        System.out.println("Enter the person name");
         String personName = sc.nextLine();
         personDetails personDetails = null;
         for (personDetails details : addressBook) {
@@ -61,12 +71,15 @@ public class AddressBookMain {
             personDetails.setZipCode(zipcode);
             personDetails.setPhoneNumber(phoneNumber);
         } else {
-            System.out.println("No contacts details found");
+            System.out.println("No contacts details found" + personName);
         }
     }
 
     private void deletePerson() {
-        System.out.println("Enter the Name");
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        System.out.println("Enter the person name");
         String personName = sc.nextLine();
         for (int i = 0; i < addressBook.size(); i++) {
             if (personName.equals(addressBook.get(i).getFirstName()) || personName.equals(addressBook.get(i).getLastName())) {
@@ -79,8 +92,32 @@ public class AddressBookMain {
     }
 
     private void showAddressBook() {
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
         for (personDetails personDetails : addressBook) {
             System.out.println(personDetails);
+        }
+    }
+
+    private List<personDetails> getAddressBook(String addressBookName) {
+        addressBook = addressBooks.get(addressBookName);
+        return addressBook;
+    }
+
+    private void addAddressBooks() {
+        System.out.println("Enter the book name");
+        String addressBookName = sc.nextLine();
+        addressBook = new ArrayList<personDetails>();
+        addressBooks.put(addressBookName, addressBook);
+        showAddressBooks();
+    }
+
+    private void showAddressBooks() {
+        for (Map.Entry<String, List> entry : addressBooks.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            System.out.println(key + " " + value);
         }
     }
 
@@ -92,19 +129,23 @@ public class AddressBookMain {
 
         while (!isExit) {
             System.out.println("""
-                     Select below
-                    1. Add Person details
-                    2. Edit person
-                    3. Delete Person
-                    4. show Address book
-                    5. Exit""");
+                     Select option
+                    1. Add new Address book
+                    2. Add new person details
+                    3. Edit person details
+                    4. Delete Person
+                    5. show Address book
+                    6. show total Address books
+                    7. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
-                case 1 -> addressBookMain.addPerson();
-                case 2 -> addressBookMain.editPerson();
-                case 3 -> addressBookMain.deletePerson();
-                case 4 -> addressBookMain.showAddressBook();
-                case 5 -> isExit = true;
+                case 1 -> addressBookMain.addAddressBooks();
+                case 2 -> addressBookMain.addPerson();
+                case 3 -> addressBookMain.editPerson();
+                case 4 -> addressBookMain.deletePerson();
+                case 5 -> addressBookMain.showAddressBook();
+                case 6 -> addressBookMain.showAddressBooks();
+                case 7 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

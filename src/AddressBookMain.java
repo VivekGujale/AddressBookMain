@@ -34,6 +34,37 @@ public class AddressBookMain {
         addressBook.add(person);
     }
 
+    private void editPerson() {
+        System.out.println("Enter the Name");
+        String personName = sc.nextLine();
+        personDetails personDetails = null;
+        for (personDetails details : addressBook) {
+            if (personName.equals(details.getFirstName()) || personName.equals(details.getLastName())) {
+                personDetails = details;
+                break;
+            }
+        }
+        if (personDetails != null) {
+            System.out.println("Enter Address");
+            String address = sc.nextLine();
+            System.out.println("Enter City");
+            String city = sc.nextLine();
+            System.out.println("Enter State");
+            String state = sc.nextLine();
+            System.out.println("Enter Zip code");
+            int zipcode = Integer.parseInt(sc.nextLine());
+            System.out.println("Enter Phone Number");
+            long phoneNumber = Long.parseLong(sc.nextLine());
+            personDetails.setAddress(address);
+            personDetails.setCity(city);
+            personDetails.setState(state);
+            personDetails.setZipCode(zipcode);
+            personDetails.setPhoneNumber(phoneNumber);
+        } else {
+            System.out.println("No contacts details found");
+        }
+    }
+
     private void showAddressBook() {
         for (personDetails personDetails : addressBook) {
             System.out.println(personDetails);
@@ -50,13 +81,15 @@ public class AddressBookMain {
             System.out.println("""
                      Select below
                     1. Add Person details
-                    2. show Address book
-                    3. Exit""");
+                    2. Edit person
+                    3. show Address book
+                    4. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addPerson();
-                case 2 -> addressBookMain.showAddressBook();
-                case 3 -> isExit = true;
+                case 2 -> addressBookMain.editPerson();
+                case 3 -> addressBookMain.showAddressBook();
+                case 4 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

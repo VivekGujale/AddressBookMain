@@ -186,6 +186,28 @@ public class AddressBookMain {
         printMap(map);
     }
 
+    //Sorting person by city, state & zip code
+    public void sortByCityStateZip() {
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        System.out.println("Select option \n 1.for City \n 2.for state \n 3.for zip ");
+        int choice = Integer.parseInt(sc.nextLine());
+        List<personDetails> result = null;
+        switch (choice) {
+            case 1 -> result = addressBook.stream().sorted(
+                    Comparator.comparing(personDetails::getCity)).collect(Collectors.toList());
+            case 2 -> result = addressBook.stream().sorted(
+                    Comparator.comparing(personDetails::getState)).collect(Collectors.toList());
+            case 3 -> result = addressBook.stream().sorted(
+                    Comparator.comparing(personDetails::getZipCode)).collect(Collectors.toList());
+            default -> System.out.println("Please enter valid number");
+        }
+        Map<String, List<personDetails>> map = new HashMap<>();
+        map.put(bookName, result);
+        printMap(map);
+    }
+
     //Provided person details
     {
         addressBooks = new HashMap<>();
@@ -265,7 +287,8 @@ public class AddressBookMain {
                     9. Search person by city or state
                     10. Find count of cities or state
                     11. Sort person alphabetically by person's name
-                    12. Exit""");
+                    12. Sort person by city, state and zip code
+                    13. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addAddressBooks();
@@ -279,7 +302,8 @@ public class AddressBookMain {
                 case 9 -> addressBookMain.searchPersonByCityOrState();
                 case 10 -> addressBookMain.getCountByCityState();
                 case 11 -> addressBookMain.sortPersonByName();
-                case 12 -> isExit = true;
+                case 12 -> addressBookMain.sortByCityStateZip();
+                case 13 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

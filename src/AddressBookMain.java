@@ -174,6 +174,18 @@ public class AddressBookMain {
 
     }
 
+    //sorting person by alphabetically by person's name
+    public void sortPersonByName() {
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        List<personDetails> result = addressBook.stream().sorted(
+                Comparator.comparing(personDetails::getFirstName)).collect(Collectors.toList());
+        Map<String, List<personDetails>> map = new HashMap<>();
+        map.put(bookName, result);
+        printMap(map);
+    }
+
     //Provided person details
     {
         addressBooks = new HashMap<>();
@@ -252,7 +264,8 @@ public class AddressBookMain {
                     8. Search Person in a City or State from all AddressBook
                     9. Search person by city or state
                     10. Find count of cities or state
-                    11. Exit""");
+                    11. Sort person alphabetically by person's name
+                    12. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addAddressBooks();
@@ -265,7 +278,8 @@ public class AddressBookMain {
                 case 8 -> addressBookMain.searchPersonInMultipleBook();
                 case 9 -> addressBookMain.searchPersonByCityOrState();
                 case 10 -> addressBookMain.getCountByCityState();
-                case 11 -> isExit = true;
+                case 11 -> addressBookMain.sortPersonByName();
+                case 12 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

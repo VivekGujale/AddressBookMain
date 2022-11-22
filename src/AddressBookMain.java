@@ -163,6 +163,17 @@ public class AddressBookMain {
                 .collect(Collectors.toList());
     }
 
+    // fining count by city or state
+    public void getCountByCityState() {
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        System.out.println("Enter the city or state name");
+        String input = sc.nextLine();
+        System.out.println("Count : " + addressBook.stream().filter(city -> city.getCity().equals(input) || city.getState().equals(input)).count());
+
+    }
+
     //Provided person details
     {
         addressBooks = new HashMap<>();
@@ -235,12 +246,13 @@ public class AddressBookMain {
                     2. Add new person details
                     3. Edit person details
                     4. Delete Person
-                    5. show Address book
-                    6. show total Address books
+                    5. Show Address book
+                    6. Show total Address books
                     7. Search person for duplicate entry
-                    8. search Person in a City or State from all AddressBook
-                    9. search person by city or state
-                    10. Exit""");
+                    8. Search Person in a City or State from all AddressBook
+                    9. Search person by city or state
+                    10. Find count of cities or state
+                    11. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addAddressBooks();
@@ -252,7 +264,8 @@ public class AddressBookMain {
                 case 7 -> addressBookMain.searchPerson();
                 case 8 -> addressBookMain.searchPersonInMultipleBook();
                 case 9 -> addressBookMain.searchPersonByCityOrState();
-                case 10 -> isExit = true;
+                case 10 -> addressBookMain.getCountByCityState();
+                case 11 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

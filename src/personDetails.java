@@ -7,7 +7,7 @@ public class personDetails {
     private int zipCode;
     private long phoneNumber;
 
-    public personDetails(){
+    public personDetails() {
 
     }
 
@@ -79,13 +79,13 @@ public class personDetails {
     }
 
     public String toString() {
-        return "personDetails{ " +
+        return
                 "First Name: " + firstName + "  " +
-                "Last Name: " + lastName + "  " +
-                "Address: " + address + "  " +
-                "City: " + city + "  " +
-                "State: " + state + "  " +
-                "Zipcode: " + zipCode + "  " +
-                "Phone Number: " + phoneNumber + ")";
+                        "Last Name: " + lastName + "  " +
+                        "Address: " + address + "  " +
+                        "City: " + city + "  " +
+                        "State: " + state + "  " +
+                        "Zipcode: " + zipCode + "  " +
+                        "Phone Number: " + phoneNumber;
     }
 }

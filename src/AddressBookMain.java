@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -103,7 +107,7 @@ public class AddressBookMain {
         String lastName = sc.nextLine();
 
         if (isPersonAdded(addressBook, firstName, lastName)) {
-            System.out.println("duplicate Entry");
+            System.out.println("Duplicate Entry");
         } else {
             System.out.println("No Entry found so adding person");
             addPerson();
@@ -112,7 +116,7 @@ public class AddressBookMain {
 
     // checking person by first name and last name.
     public boolean isPersonAdded(List<personDetails> personList, String firstName, String lastName) {
-        return personList.stream().anyMatch(item -> item.equals(firstName) && item.equals(lastName));
+        return personList.stream().anyMatch(item -> item.getFirstName().equals(firstName) && item.getLastName().equals(lastName));
     }
 
 
@@ -208,6 +212,53 @@ public class AddressBookMain {
         printMap(map);
     }
 
+    //Read or Write the Address Book with Persons Contact into a File using File IO
+    public void readAndWriteFile() throws IOException {
+
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        StringBuilder sb = new StringBuilder();
+        for (personDetails personDetails : addressBook) {
+            sb.append(personDetails.toString()).append("\n");
+        }
+
+        // attached a file to File Writer
+        FileWriter fw = new FileWriter("src/" + bookName + ".txt");
+
+        // read character wise from string and write
+        // into FileWriter
+        for (int i = 0; i < sb.length(); i++)
+            fw.write(sb.charAt(i));
+
+        System.out.println("Writing successful ...........");
+        //close the file
+        fw.close();
+
+        //To read the file
+        System.out.println("Read below data from file");
+        int ch;
+
+        // check if File exists or not
+        FileReader fr = null;
+        try {
+            fr = new FileReader("src/" + bookName + ".txt");
+        } catch (FileNotFoundException fe) {
+            System.out.println("File not found");
+        }
+
+        // read from FileReader till the end of file
+        while (true) {
+            assert fr != null;
+            if ((ch = fr.read()) == -1) break;
+            System.out.print((char) ch);
+        }
+
+        // close the file
+        fr.close();
+    }
+
+
     //Provided person details
     {
         addressBooks = new HashMap<>();
@@ -268,7 +319,7 @@ public class AddressBookMain {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Welcome to Address Book");
         boolean isExit = false;
         AddressBookMain addressBookMain = new AddressBookMain();
@@ -288,7 +339,8 @@ public class AddressBookMain {
                     10. Find count of cities or state
                     11. Sort person alphabetically by person's name
                     12. Sort person by city, state and zip code
-                    13. Exit""");
+                    13. Read or write AddressBook using file .txt
+                    14. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addAddressBooks();
@@ -303,7 +355,8 @@ public class AddressBookMain {
                 case 10 -> addressBookMain.getCountByCityState();
                 case 11 -> addressBookMain.sortPersonByName();
                 case 12 -> addressBookMain.sortByCityStateZip();
-                case 13 -> isExit = true;
+                case 13 -> addressBookMain.readAndWriteFile();
+                case 14 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

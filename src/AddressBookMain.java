@@ -1,7 +1,4 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -258,6 +255,53 @@ public class AddressBookMain {
         fr.close();
     }
 
+    //Read or Write the Address Book with Persons Contact into a File using csv file
+    public void readAndWriteCsvFile() throws IOException {
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+        List<String> rows = new ArrayList<>();
+        for (personDetails personDetails : addressBook) {
+            rows.add(personDetails.getFirstName() + "," + personDetails.getLastName() + "," + personDetails.getAddress() + "," +
+                    personDetails.getCity() + "," + personDetails.getState() + "," + personDetails.getZipCode() + "," + personDetails.getPhoneNumber());
+
+        }
+
+        FileWriter csvWriter = new FileWriter("src/" + bookName + ".csv");
+        csvWriter.append("FirstName");
+        csvWriter.append(",");
+        csvWriter.append("LastName");
+        csvWriter.append(",");
+        csvWriter.append("Address");
+        csvWriter.append(",");
+        csvWriter.append("City");
+        csvWriter.append(",");
+        csvWriter.append("State");
+        csvWriter.append(",");
+        csvWriter.append("Zip");
+        csvWriter.append(",");
+        csvWriter.append("MobileNumber");
+        csvWriter.append("\n");
+
+        for (String rowData : rows) {
+            csvWriter.append(rowData);
+            csvWriter.append("\n");
+        }
+        System.out.println("Writing successful ...........");
+        csvWriter.flush();
+        csvWriter.close();
+
+        //To read data from file
+        System.out.println("Read below data from file");
+        Scanner sc = new Scanner(new File("src/" + bookName + ".csv"));
+        sc.useDelimiter(" ");   //sets the delimiter pattern
+        while (sc.hasNext())  //returns a boolean value
+        {
+            System.out.println(sc.next());  //find and returns the next complete token from this scanner
+        }
+        sc.close();  //closes the scanner
+    }
+
 
     //Provided person details
     {
@@ -340,7 +384,8 @@ public class AddressBookMain {
                     11. Sort person alphabetically by person's name
                     12. Sort person by city, state and zip code
                     13. Read or write AddressBook using file .txt
-                    14. Exit""");
+                    14. Add or Read AddressBook using CSV file
+                    15. Exit""");
             int choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
                 case 1 -> addressBookMain.addAddressBooks();
@@ -356,7 +401,8 @@ public class AddressBookMain {
                 case 11 -> addressBookMain.sortPersonByName();
                 case 12 -> addressBookMain.sortByCityStateZip();
                 case 13 -> addressBookMain.readAndWriteFile();
-                case 14 -> isExit = true;
+                case 14 -> addressBookMain.readAndWriteCsvFile();
+                case 15 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }

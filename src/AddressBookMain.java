@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -302,6 +304,28 @@ public class AddressBookMain {
         sc.close();  //closes the scanner
     }
 
+    //Read or Write the Address Book with Persons Contact into a File using json file
+    private void readAndWriteJsonFile() throws IOException {
+
+        System.out.println("Please select the book");
+        String bookName = sc.nextLine();
+        addressBook = getAddressBook(bookName);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        // convert map to JSON file
+        mapper.writeValue(new File("src/" + bookName + ".json"), addressBook);
+        System.out.println("Writing successful ...........");
+
+        // Read Json File
+        System.out.println("Read below data from file");
+        ObjectMapper mapper1 = new ObjectMapper();
+        personDetails[] jsonObj = mapper1.readValue(new File("src/" + bookName + ".json"), personDetails[].class);
+
+        for (personDetails itr : jsonObj) {
+            System.out.println(itr.toString());
+        }
+    }
 
     //Provided person details
     {
@@ -402,7 +426,8 @@ public class AddressBookMain {
                 case 12 -> addressBookMain.sortByCityStateZip();
                 case 13 -> addressBookMain.readAndWriteFile();
                 case 14 -> addressBookMain.readAndWriteCsvFile();
-                case 15 -> isExit = true;
+                case 15 -> addressBookMain.readAndWriteJsonFile();
+                case 16 -> isExit = true;
                 default -> System.out.println("Please enter valid details");
             }
         }
